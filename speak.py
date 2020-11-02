@@ -1,27 +1,27 @@
-import speech_recognition as sr
 import pyttsx3
+import speech_recognition as sr
 
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voices', voices[0].id)
+engine.setProperty('voices',voices[0].id)
 rate = engine.getProperty('rate')
-engine.setProperty('rate', 165)
+engine.setProperty('rate', 175)
 
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
-def command():
+def takeCommand():
     r = sr.Recognizer()
     audio = ''
     with sr.Microphone() as source:
-        print('Listening...')
+        print("Listening...")
         audio = r.listen(source, phrase_time_limit=4)
     try:
-        text = r.recognize_google(audio, language='en-US')
+        text = r.recognize_google(audio,language='es-ES')
         print('You: ', text)
         return text
     except:
         print('...')
-        return 'none'
+        return "none"
     return text
