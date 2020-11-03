@@ -1,3 +1,9 @@
+from __future__ import print_function
+import pickle
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 import os
 import datetime
 import time
@@ -12,7 +18,10 @@ import wikipedia
 
 os.system('cls')
 
+# If modifying these scopes, delete the file token.pickle.
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 pathChromeDriver = "C:\Program Files (x86)\chromedriver.exe"
+
 driver = webdriver.Chrome(pathChromeDriver)
 
 def takeNote(text):
@@ -41,8 +50,52 @@ def getInformation(text):
     print("results")
     speak(results)
 
-if __name__=='__main__':
+def auth_googleCalendar():
+    creds = None
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    service = build('calendar', 'v3', credentials=creds)
     
+    return service
+
+def getEvents(n, service):
+    # Call the Calendar API
+    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    print(f'Getting the upcoming {n} events')
+    events_result = service.events().list(calendarId='primary', timeMin=now,
+                                        maxResults=n, singleEvents=True,
+                                        orderBy='startTime').execute()
+    events = events_result.get('items', [])
+
+    if not events:
+        print('No upcoming events found.')
+        speak('No hay ningun evento próximo.')
+    for event in events:
+        start = event['start'].get('dateTime', event['start'].get('date'))
+        print(event['summary'])
+        speak(event['summary'])
+        if event['start'].get('dateTime') == None:
+            pass
+        else:
+            print(event['start'].get('dateTime'))
+            #speak(event['start'].get('dateTime'))
+
+
+if __name__=='__main__':
+
+    service = auth_googleCalendar()
     while True:
         query = takeCommand().lower()
         if 'hanna' in query:
@@ -70,6 +123,10 @@ if __name__=='__main__':
             elif 'quien es' in query or 'buscá sobre' in query or 'wikipedia' in query or 'quiero saber sobre' in query:
                 speak("buscando...")
                 getInformation(query)
+            elif 'eventos' in query or 'tengo algo' in query or 'calendario' in query:
+                getEvents(5, service)
+
+
 
 
 
