@@ -6,6 +6,8 @@ from speak import *
 import subprocess
 import wikipedia
 import datetime
+from datetime import datetime as dt
+from dateutil.parser import parse as dtparse
 import time
 import pyaudio
 
@@ -39,3 +41,30 @@ def getInformation(text):
     speak("según wikipedia")
     print("results")
     speak(results)
+
+def getEvents(n, service):
+    # Call the Calendar API
+    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    print(f'Getting the upcoming {n} events')
+    events_result = service.events().list(calendarId='primary', timeMin=now,
+                                        maxResults=n, singleEvents=True,
+                                        orderBy='startTime').execute()
+    events = events_result.get('items', [])
+
+    if not events:
+        print('No hay ningun evento próximo.')
+        speak('No hay ningun evento próximo.')
+    for event in events:
+        start = event['start'].get('dateTime', event['start'].get('date'))
+        print(event['summary'])
+        speak(event['summary'])
+        if event['start'].get('dateTime') == None:
+            pass
+        else:
+            timeFormat = f'%d del %m, a las %H:%M %p'
+            time = event['start'].get('dateTime') 
+            print(f'Hanna: {dt.strftime(dtparse(time), format=timeFormat)}')
+            speak(dt.strftime(dtparse(time), format=timeFormat))
+    
+    print('Hanna: Esos son todos los eventos.')
+    speak('Esos son todos los eventos.')

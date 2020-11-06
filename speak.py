@@ -15,7 +15,8 @@ def takeCommand():
     r = sr.Recognizer()
     audio = ''
     with sr.Microphone() as source:
-        print("Listening...")
+        r.adjust_for_ambient_noise(source,duration=1)
+        print("Escuchando...")
         audio = r.listen(source, phrase_time_limit=4)
     try:
         text = r.recognize_google(audio,language='es-ES')
