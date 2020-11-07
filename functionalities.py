@@ -2,7 +2,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from speak import *
+from speak import speak, takeCommand
 import subprocess
 import wikipedia
 import datetime
@@ -10,9 +10,10 @@ from datetime import datetime as dt
 from dateutil.parser import parse as dtparse
 import time
 import pyaudio
+import requests
 
-
-pathChromeDriver = "C:\Program Files (x86)\chromedriver.exe"
+#pathChromeDriver = "C:\Program Files (x86)\chromedriver.exe"
+pathChromeDriver = "C:/Program Files (x86)/chromedriver.exe"
 driver = webdriver.Chrome(pathChromeDriver)
 
 def openWebsite(website):
@@ -45,7 +46,6 @@ def getInformation(text):
 def getEvents(n, service):
     # Call the Calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    print(f'Getting the upcoming {n} events')
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                         maxResults=n, singleEvents=True,
                                         orderBy='startTime').execute()
@@ -55,7 +55,7 @@ def getEvents(n, service):
         print('No hay ningun evento próximo.')
         speak('No hay ningun evento próximo.')
     for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
+        #start = event['start'].get('dateTime', event['start'].get('date'))
         print(event['summary'])
         speak(event['summary'])
         if event['start'].get('dateTime') == None:
@@ -68,3 +68,18 @@ def getEvents(n, service):
     
     print('Hanna: Esos son todos los eventos.')
     speak('Esos son todos los eventos.')
+
+def weatherRequest(city,key):
+    
+    apiLink = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}&lang=sp"
+
+    api_link = requests.get(apiLink)
+    apiData = api_link.json()
+    if apiData['cod'] == '404':
+        print('Hanna: No hay datos disponibles')
+        speak(' No hay datos disponibles')
+    else:
+        temp = int((apiData['main']['temp'])- 273.15)
+        description = apiData['weather'][0]['description']
+        print(f"Hanna: Hoy en {city}, está {description} y hacen {temp} grados.")
+        speak(f"Hoy en {city}, está {description} y hacen {temp} grados.")
