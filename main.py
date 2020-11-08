@@ -117,8 +117,8 @@ if __name__=='__main__':
                     speak(f"Hoy es el, {currentDate}")
 
                 elif 'como esta el clima' in query or 'como esta el dia' in query or 'como esta el día' in query or 'clima' in query:
-                    if os.path.exists('api_weather.txt'):
-                        with open('api_weather.txt') as key:
+                    if os.path.exists('api_Keys/api_weather.txt'):
+                        with open('api_Keys/api_weather.txt') as key:
                             apiKey = key.read()
                     print('Hanna: ¿En que ciudad?')
                     speak('¿En que ciudad?')
@@ -160,4 +160,7 @@ if __name__=='__main__':
                     speak("Buscando eventos")
                     func.getEvents(10, service)
                 
+                elif 'hay alguien haciendo stream' in query or 'quien esta en vivo' in query:
+                    func.checkStreamers()
 
+                

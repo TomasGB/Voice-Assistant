@@ -11,10 +11,13 @@ from dateutil.parser import parse as dtparse
 import time
 import pyaudio
 import requests
+import json
+from twitchAPI import Twitch
 
 #pathChromeDriver = "C:\Program Files (x86)\chromedriver.exe"
 pathChromeDriver = "C:/Program Files (x86)/chromedriver.exe"
 driver = webdriver.Chrome(pathChromeDriver)
+
 
 def openWebsite(website):
     driver.get(website)
@@ -56,7 +59,7 @@ def getEvents(n, service):
         speak('No hay ningun evento próximo.')
     for event in events:
         #start = event['start'].get('dateTime', event['start'].get('date'))
-        print(event['summary'])
+        print(f"Hanna: {event['summary']}")
         speak(event['summary'])
         if event['start'].get('dateTime') == None:
             pass
@@ -81,5 +84,34 @@ def weatherRequest(city,key):
     else:
         temp = int((apiData['main']['temp'])- 273.15)
         description = apiData['weather'][0]['description']
-        print(f"Hanna: Hoy en {city}, está {description} y hacen {temp} grados.")
-        speak(f"Hoy en {city}, está {description} y hacen {temp} grados.")
+        print(f"Hanna: Hoy el clima en {city} es, {description} y hacen {temp} grados.")
+        speak(f"Hoy el clima en {city}es, {description} y hacen {temp} grados.")
+
+def checkStreamers():
+    if os.path.exists('api_Keys/api_Twitch'):
+        with open('api_Keys/api_Twitch/user_ID.txt') as user_ID:
+            twitch_ID = user_ID.read()
+            #print(twitch_ID)
+        with open('api_Keys/api_Twitch/user_Secret.txt') as user_SECRET:
+            twitch_SECRET = user_SECRET.read()
+            #print(twitch_SECRET)
+
+    twitch = Twitch(twitch_ID, twitch_SECRET)
+    twitch.authenticate_app([])
+
+    streamers = ["alexelcapo","ibai", "babybouge","haannahr","elsonyerok","sana","elgordobarreiro","goncho","coscu"]
+
+    for streamer in streamers:
+        try:
+            # get ID of user
+            user_info = twitch.get_users(logins=[streamer])
+            usuario_id = user_info['data'][0]['id']
+            #check if it's live
+            isLive = twitch.get_streams(user_id=usuario_id)
+
+            if isLive['data'][0]['type'] == 'live':
+                print(f'Hanna: {streamer} esta stremeando')
+                speak(f'{streamer} esta stremeando')
+        except :
+            print(f'Hanna: {streamer} esta offline')
+            speak(f'{streamer} esta offline')
