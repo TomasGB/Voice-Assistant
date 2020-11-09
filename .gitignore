@@ -1,7 +1,7 @@
 #Credentials
-apiCreadentials.py
+apiCredentials.py
 
-creadentials.json
+credentials.json
 
 token.pickle
 debug.log
