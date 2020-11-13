@@ -11,6 +11,7 @@ from dateutil.parser import parse as dtparse
 import time
 import pyaudio
 import requests
+from apiCredentials import twitchUser_ID, twitchUser_SECRET
 import json
 from twitchAPI import Twitch
 
@@ -28,8 +29,18 @@ def playVideoOnYoutube(text):
     driver.implicitly_wait(5)
     driver.find_element_by_name("search_query").send_keys(text)
     driver.find_element_by_id("search-icon-legacy").click()
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(6)
     driver.find_element_by_id("video-title").click()
+    
+    ads = 0
+    while True and ads<3:
+        try:
+            skipBtn = driver.find_element_by_class_name('ytp-ad-skip-button-container')
+            skipBtn.click()
+            ads+=1
+        except:
+            ads+=1
+            continue
     
 def takeNote(text):
     speak("¿Que nombre le pongo?")
@@ -88,18 +99,10 @@ def weatherRequest(city,key):
         speak(f"Hoy el clima en {city}es, {description} y hacen {temp} grados.")
 
 def checkStreamers():
-    if os.path.exists('api_Keys/api_Twitch'):
-        with open('api_Keys/api_Twitch/user_ID.txt') as user_ID:
-            twitch_ID = user_ID.read()
-            #print(twitch_ID)
-        with open('api_Keys/api_Twitch/user_Secret.txt') as user_SECRET:
-            twitch_SECRET = user_SECRET.read()
-            #print(twitch_SECRET)
-
-    twitch = Twitch(twitch_ID, twitch_SECRET)
+    twitch = Twitch(twitchUser_ID, twitchUser_SECRET)
     twitch.authenticate_app([])
 
-    streamers = ["alexelcapo","ibai", "babybouge","haannahr","elsonyerok","sana","elgordobarreiro","goncho","coscu"]
+    streamers = ["alexelcapo","ibai", "babybouge","haannahr","goncho","coscu"]
 
     for streamer in streamers:
         try:
@@ -112,6 +115,6 @@ def checkStreamers():
             if isLive['data'][0]['type'] == 'live':
                 print(f'Hanna: {streamer} esta stremeando')
                 speak(f'{streamer} esta stremeando')
-        except :
-            print(f'Hanna: {streamer} esta offline')
-            speak(f'{streamer} esta offline')
+
+        except:
+            pass

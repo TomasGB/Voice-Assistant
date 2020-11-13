@@ -10,6 +10,7 @@ import time
 import pyaudio
 from speak import speak, takeCommand
 import subprocess
+from apiCredentials import weather_Key
 import functionalities as func
 
 
@@ -117,14 +118,12 @@ if __name__=='__main__':
                     speak(f"Hoy es el, {currentDate}")
 
                 elif 'como esta el clima' in query or 'como esta el dia' in query or 'como esta el día' in query or 'clima' in query:
-                    if os.path.exists('api_Keys/api_weather.txt'):
-                        with open('api_Keys/api_weather.txt') as key:
-                            apiKey = key.read()
+                    
                     print('Hanna: ¿En que ciudad?')
                     speak('¿En que ciudad?')
                     
-                    city =takeCommand().lower()
-                    func.weatherRequest(city, apiKey)
+                    city = takeCommand().lower()
+                    func.weatherRequest(city, weather_Key)
 
                 elif 'abri youtube' in query or 'abrir youtube' in query:
                     youtubeURL = "https://www.youtube.com/"
