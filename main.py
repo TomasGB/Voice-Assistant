@@ -85,6 +85,7 @@ def auth_googleCalendar():
 if __name__=='__main__':
     
     service = auth_googleCalendar()
+    api = func.AuthTwitter()
 
     while True:
         query = takeCommand().lower()
@@ -162,4 +163,11 @@ if __name__=='__main__':
                 elif 'hay alguien haciendo stream' in query or 'quien esta en vivo' in query:
                     func.checkStreamers()
 
-                
+                elif 'leeme los ultimos tweets' in query or 'leeme tweets' in query:
+                    func.getLatestTweets(api)
+
+                elif 'cuales son las tendencias' in query or 'de que se habla en twitter' in query:
+                    func.getTrendsOnTwitter(api)
+
+                elif 'tweeteá' in query or 'twiteá' in query or 'publicá un tweet' in query or 'publicá un twit' in query:
+                    func.publishTweet(api)

@@ -11,11 +11,12 @@ from dateutil.parser import parse as dtparse
 import time
 import pyaudio
 import requests
-from apiCredentials import twitchUser_ID, twitchUser_SECRET
+from apiCredentials import twitchUser_ID, twitchUser_SECRET, twitter_key, twitter_keySecret, twitter_acces_token,twitter_acces_tokenSecret
 import json
 from twitchAPI import Twitch
+import tweepy
 
-#pathChromeDriver = "C:\Program Files (x86)\chromedriver.exe"
+
 pathChromeDriver = "C:/Program Files (x86)/chromedriver.exe"
 driver = webdriver.Chrome(pathChromeDriver)
 
@@ -102,7 +103,7 @@ def checkStreamers():
     twitch = Twitch(twitchUser_ID, twitchUser_SECRET)
     twitch.authenticate_app([])
 
-    streamers = ["alexelcapo","ibai", "babybouge","haannahr","goncho","coscu"]
+    streamers = ["alexelcapo","ibai", "babybouge","haannahr","sana","goncho","coscu"]
 
     for streamer in streamers:
         try:
@@ -112,9 +113,63 @@ def checkStreamers():
             #check if it's live
             isLive = twitch.get_streams(user_id=usuario_id)
 
+            counter=0
             if isLive['data'][0]['type'] == 'live':
-                print(f'Hanna: {streamer} esta stremeando')
-                speak(f'{streamer} esta stremeando')
-
+                print(f'Hanna: {streamer}')
+                speak({streamer})
+                counter+=1
+            
+            if counter == 0:
+                print('Hanna: Nadie esta stremeando')
+                speak('Nadie esta stremeando')
+            elif counter == 1:
+                print('Hanna: Esta stremeando')
+                speak('Esta stremeando')
+            else:
+                print('Hanna: Estan stremeando')
+                speak('Estan stremeando')
+        
         except:
             pass
+
+def AuthTwitter():
+    consumerKey = twitter_key
+    consumerKeySecret = twitter_keySecret
+    authTwitter = tweepy.OAuthHandler(consumerKey,consumerKeySecret)
+    authTwitter.set_access_token(twitter_acces_token, twitter_acces_tokenSecret)
+    api = tweepy.API(authTwitter, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+
+    return api
+
+def getLatestTweets(api):
+	tweets = api.home_timeline(count=5)
+	for status in tweets:
+		print('-----------------------------------------------')
+		print(f'@{status.user.screen_name}: {status.text}')
+		speak(f'{status.user.screen_name}: {status.text}')
+
+def getTrendsOnTwitter(api):
+	ARGENTINA_WOE_ID = 468739
+	argentina_trends = api.trends_place(ARGENTINA_WOE_ID)
+	trends = json.loads(json.dumps(argentina_trends, indent=1))
+
+	print('----------------------------------------------')
+	for trend in trends[0]["trends"]:
+		print (trend["name"])
+		speak(trend["name"])
+
+def publishTweet(api):
+	print('Hanna: ¿Qué querés twitter?')
+	speak('¿Qué querés twitter?')
+	text = takeCommand().lower()
+	print(f'hanna: vas a twittear, {text}')
+	speak(f'Vas a twittear, {text}')
+	
+	print('Hanna: ¿Estás de acuerdo?')
+	speak('¿Estás de acuerdo?')
+	answ=takeCommand().lower()
+
+	if answ == 'si' or answ == 'sí':
+		api.update_status(f'{text}')
+	else:
+		pass
