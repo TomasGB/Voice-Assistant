@@ -1,12 +1,12 @@
 #pycache dir
 /__pycache__
 #Credentials
-apiCredentials.py
+/src/apiCredentials.py
 
-credentials.json
+/src/credentials.json
 
-token.pickle
-debug.log
+/src/token.pickle
+/src/debug.log
 
 #Extras
 toDo.txt
