@@ -18,14 +18,14 @@ import tweepy
 
 
 pathChromeDriver = "C:/Program Files (x86)/chromedriver.exe"
-driver = webdriver.Chrome(pathChromeDriver)
 
 
 def openWebsite(website):
+    driver = webdriver.Chrome(pathChromeDriver)
     driver.get(website)
 
 def playVideoOnYoutube(text):
-
+    driver = webdriver.Chrome(pathChromeDriver)
     driver.get("https://www.youtube.com/")
     driver.implicitly_wait(5)
     driver.find_element_by_name("search_query").send_keys(text)
