@@ -28,7 +28,7 @@ Some of them are:
 ## How to use:
 
 * Open up command prompt / terminal.
-* Change directory with cd to the location of the program .
+* Change directory with cd inside src folder.
 * Run by typing "python main.py".
 * To wake up Hanna just say 'Hanna'.
 * Ask for a task. 
