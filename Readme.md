@@ -13,7 +13,7 @@ Some of them are:
 * Read your countrys Trending Topics.
 * Publish a tweet.
 * Open websites.
-* play videos or songs on Youtube.
+* Play videos or songs on Youtube.
 
 ## Dependencies
 
