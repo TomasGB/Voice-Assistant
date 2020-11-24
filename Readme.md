@@ -1,10 +1,10 @@
 # Hanna Voice Assistant
 
-Python Assistant capable of taking voice commands and interact with different third party API's (Google calendar, Twitch,Twitter, OpenWeather). The goal it's to automate daily tasks.
+Python Assistant capable of taking voice commands and interact with different third party APIs (Google calendar, Twitch,Twitter, OpenWeather). The goal it's to automate daily tasks.
 
 ## Functionalities
 
-Hanna has different functionalities, that can be found inside 'functionalities.py'.
+Hanna has different functionalities, that can be found inside "functionalities.py".
 Some of them are:
 
 * Check for upcoming events on Google Calendar.
@@ -28,7 +28,9 @@ Some of them are:
 ## How to use:
 
 * Open up command prompt / terminal.
-* Change directory with cd inside src folder.
+* Install all the dependencies.
+* Rename the 'apiCredentialsSample.py' file to "apiCredentials.py" and put your own keys.
+* Change directory inside src folder with "cd src".
 * Run by typing "python main.py".
-* To wake up Hanna just say 'Hanna'.
+* To wake up Hanna just say the wake word "Hanna".
 * Ask for a task. 
