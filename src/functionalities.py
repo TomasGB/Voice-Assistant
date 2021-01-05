@@ -17,21 +17,19 @@ from twitchAPI import Twitch
 import tweepy
 
 
-pathChromeDriver = "C:/Program Files (x86)/chromedriver.exe"
-
-
-def openWebsite(website):
-    driver = webdriver.Chrome(pathChromeDriver)
+def openWebsite(website, driver):
+    driver.maximize_window()
     driver.get(website)
 
 
-def playVideoOnYoutube(text):
-    driver = webdriver.Chrome(pathChromeDriver)
+def playVideoOnYoutube(text, driver):
+    driver.maximize_window()
     driver.get("https://www.youtube.com/")
     driver.implicitly_wait(5)
     driver.find_element_by_name("search_query").send_keys(text)
+    driver.implicitly_wait(5)
     driver.find_element_by_id("search-icon-legacy").click()
-    driver.implicitly_wait(6)
+    driver.implicitly_wait(10)
     driver.find_element_by_id("video-title").click()
 
     ads = 0
@@ -65,9 +63,12 @@ def getInformation(text):
 
 def getEvents(n, service):
     # Call the Calendar API
-    now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-    events_result = service.events().list(calendarId='primary', timeMin=now,
-                                          maxResults=n, singleEvents=True,
+    now = datetime.datetime.utcnow().isoformat(
+    ) + 'Z'  # 'Z' indicates UTC time
+    events_result = service.events().list(calendarId='primary',
+                                          timeMin=now,
+                                          maxResults=n,
+                                          singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
 
@@ -103,7 +104,8 @@ def weatherRequest(city, key):
         temp = int((apiData['main']['temp']) - 273.15)
         description = apiData['weather'][0]['description']
         print(
-            f"Hanna: Hoy el clima en {city} es, {description} y hacen {temp} grados.")
+            f"Hanna: Hoy el clima en {city} es, {description} y hacen {temp} grados."
+        )
         speak(
             f"Hoy el clima en {city}es, {description} y hacen {temp} grados.")
 
@@ -112,8 +114,10 @@ def checkStreamers():
     twitch = Twitch(twitchUser_ID, twitchUser_SECRET)
     twitch.authenticate_app([])
 
-    streamers = ["alexelcapo", "ibai", "babybouge",
-                 "haannahr", "sana", "goncho", "coscu"]
+    streamers = [
+        "alexelcapo", "ibai", "babybouge", "haannahr", "sana", "goncho",
+        "coscu"
+    ]
 
     for streamer in streamers:
         try:
@@ -147,9 +151,10 @@ def AuthTwitter():
     consumerKey = twitter_key
     consumerKeySecret = twitter_keySecret
     authTwitter = tweepy.OAuthHandler(consumerKey, consumerKeySecret)
-    authTwitter.set_access_token(
-        twitter_acces_token, twitter_acces_tokenSecret)
-    api = tweepy.API(authTwitter, wait_on_rate_limit=True,
+    authTwitter.set_access_token(twitter_acces_token,
+                                 twitter_acces_tokenSecret)
+    api = tweepy.API(authTwitter,
+                     wait_on_rate_limit=True,
                      wait_on_rate_limit_notify=True)
 
     return api
