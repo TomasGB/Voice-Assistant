@@ -31,6 +31,6 @@ Some of them are:
 * Install all the dependencies.
 * Rename the 'apiCredentialsSample.py' file to "apiCredentials.py" and put your own keys.
 * Change directory inside src folder with "cd src".
-* Run by typing "python main.py".
+* Run "main.py".
 * To wake up Hanna just say the wake word "Hanna".
-* Ask for a task. 
+* Ask for a task.
