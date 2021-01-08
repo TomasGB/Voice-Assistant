@@ -1,0 +1,78 @@
+html {
+    background-image: linear-gradient(to bottom,rgb(16, 51, 167),rgb(81, 121, 253));
+    font-family: "Helvetica";
+
+}
+h1 {
+    margin-top: 10%;
+    text-align: center;
+}
+.container{
+    display: flex;
+    margin: 5%;
+    padding: 5px;
+    justify-content: center;
+}
+#WakeBtn {
+    color: '#000000';
+    background-color: rgb(117, 182, 243);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 20;
+    font-weight: 200;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#WakeBtn:hover {
+    color: '#000000';
+    background-color: rgba(93, 170, 243, 0.7);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.SoundWave-p{
+    margin: 25px;
+    font-weight: 700;
+}
+#soundWave {
+    height: 30px;
+    left: 50%;
+    margin: -30px 0 0 -20px;
+    position: absolute;
+    top: 50%;
+    width: 100px;
+}
+
+.bar {
+   background: #031785;
+    bottom: 1px;
+    height: 3px;
+    position: absolute;
+    width: 3px;      
+    animation: sound 0ms -800ms linear infinite alternate;
+}
+
+@keyframes sound {
+    0% {
+       opacity: .35;
+        height: 3px; 
+    }
+    100% {
+        opacity: 1;       
+        height: 28px;        
+    }
+}
+
+.bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
+.bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
+.bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
+.bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
+.bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
+.bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
+.bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
+.bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
+.bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
+.bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
+.bar:nth-child(11)  { left: 1px; animation-duration: 474ms; }
+.bar:nth-child(12)  { left: 5px; animation-duration: 433ms; }
+.bar:nth-child(13)  { left: 9px; animation-duration: 407ms; }
