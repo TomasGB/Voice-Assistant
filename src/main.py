@@ -16,6 +16,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import threading
+import eel
 
 os.system('cls')
 # If modifying these scopes, delete the file token.pickle.
@@ -45,8 +46,7 @@ def auth_googleCalendar():
     return service
 
 
-if __name__ == '__main__':
-
+def wakeUp():
     service = auth_googleCalendar()
     api = func.AuthTwitter()
     driver = webdriver.Chrome(pathChromeDriver)
@@ -105,11 +105,8 @@ if __name__ == '__main__':
                 song = takeCommand().lower()
                 print(f"Hanna: Buscando la cancion, {song}")
                 speak(f"Buscando la cancion, {song}")
-                t = threading.Thread(target=func.playVideoOnYoutube,
-                                     args=(
-                                         song,
-                                         driver,
-                                     ))
+                t = threading.Thread(
+                    target=func.playVideoOnYoutube, args=(song, driver,))
                 t.start()
                 #func.playVideoOnYoutube(song, driver)
 
@@ -119,11 +116,8 @@ if __name__ == '__main__':
                 video = takeCommand().lower()
                 print(f"Hanna:  Buscando el video, {video}")
                 speak(f"buscando la video, {video}")
-                t = threading.Thread(target=func.playVideoOnYoutube,
-                                     args=(
-                                         video,
-                                         driver,
-                                     ))
+                t = threading.Thread(
+                    target=func.playVideoOnYoutube, args=(video, driver,))
                 t.start()
                 #func.playVideoOnYoutube(video, driver)
 
@@ -135,7 +129,7 @@ if __name__ == '__main__':
             elif 'hay alguien haciendo stream' in query or 'quien esta en vivo' in query:
                 func.checkStreamers()
 
-            elif 'leeme los ultimos tweets' in query or 'leeme tweets' in query:
+            elif 'leeme los ultimos tweets' in query or 'leeme tweets' in query or 'léeme tweets' in query or 'léeme tweet' in query:
                 func.getLatestTweets(api)
 
             elif 'cuales son las tendencias' in query or 'de que se habla en twitter' in query:
@@ -150,3 +144,15 @@ if __name__ == '__main__':
             break
         else:
             pass
+
+
+# GUI
+eel.init('UI')
+
+
+@eel.expose
+def init():
+    wakeUp()
+
+
+eel.start('index.html', size=(500, 500))
