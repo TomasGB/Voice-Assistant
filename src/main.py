@@ -46,7 +46,7 @@ def auth_googleCalendar():
     return service
 
 
-def wakeUp():
+if __name__ == '__main__':
     service = auth_googleCalendar()
     api = func.AuthTwitter()
     driver = webdriver.Chrome(pathChromeDriver)
@@ -144,15 +144,3 @@ def wakeUp():
             break
         else:
             pass
-
-
-# GUI
-eel.init('UI')
-
-
-@eel.expose
-def init():
-    wakeUp()
-
-
-eel.start('index.html', size=(500, 500))
