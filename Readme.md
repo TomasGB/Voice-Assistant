@@ -23,7 +23,6 @@ Hanna has different functionalities, that can be found inside "functionalities.p
 -   Selenium [Link](https://selenium-python.readthedocs.io/)
 -   PyAudio [Link](https://pypi.org/project/PyAudio/)
 -   Pyttsx3 [Link](https://pypi.org/project/pyttsx3/)
--   Eel [Link](https://github.com/ChrisKnott/Eel)
 
 ## How to use:
 
