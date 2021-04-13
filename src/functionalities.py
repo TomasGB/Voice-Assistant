@@ -182,8 +182,8 @@ def getTrendsOnTwitter(api):
 
 
 def publishTweet(api):
-    print('Hanna: ¿Qué querés twitter?')
-    speak('¿Qué querés twitter?')
+    print('Hanna: ¿Qué querés twittear?')
+    speak('¿Qué querés twittear?')
     text = takeCommand().lower()
     print(f'hanna: vas a twittear, {text}')
     speak(f'Vas a twittear, {text}')
