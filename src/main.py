@@ -16,7 +16,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import threading
-import eel
 
 os.system('cls')
 # If modifying these scopes, delete the file token.pickle.
