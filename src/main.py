@@ -12,6 +12,7 @@ from speak import speak, takeCommand
 import subprocess
 from apiCredentials import weather_Key
 import functionalities as func
+import triggers as trig
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
@@ -54,12 +55,12 @@ if __name__ == '__main__':
     while True:
         query = takeCommand().lower()
 
-        if 'hanna' in query or 'jana' in query or 'ana' in query:
+        if query in trig.WAKE_TRIGGERS:
             print("Hanna: Hola , ¿en que te puedo ayudar?")
             speak("Hola, ¿en que te puedo ayudar?")
             query = takeCommand().lower()
 
-            if 'anotá' in query or 'anota' in query or 'escribí una nota' in query or 'escribí un memo' in query:
+            if  query in trig.NOTE_TAKING_TRIGGERS:
                 print('Hanna: ¿Que querés que escriba?')
                 speak('¿Que querés que escriba?')
                 text = takeCommand().lower()
@@ -67,17 +68,17 @@ if __name__ == '__main__':
                 func.takeNote(text)
                 speak('Listo!')
 
-            elif 'qué hora es' in query or 'me decís la hora' in query:
+            elif query in trig.TIME_TRIGGERS:
                 currentTime = datetime.datetime.now().strftime("%H:%M")
                 print(f"Hanna: Son las, {currentTime}, horas")
                 speak(f"Son las, {currentTime}, horas")
 
-            elif 'qué día es' in query or 'que día es' in query or 'me decis el dia' in query:
+            elif query in trig.DAY_TRIGGERS:
                 currentDate = datetime.datetime.now().strftime("%d, del ,%m")
                 print(f"Hanna: Hoy es el, {currentDate}")
                 speak(f"Hoy es el, {currentDate}")
 
-            elif 'como esta el clima' in query or 'como esta el dia' in query or 'como esta el día' in query or 'clima' in query:
+            elif query in trig.WHEATHER_TRIGGERS:
 
                 print('Hanna: ¿En que ciudad?')
                 speak('¿En que ciudad?')
@@ -85,20 +86,20 @@ if __name__ == '__main__':
                 city = takeCommand().lower()
                 func.weatherRequest(city, weather_Key)
 
-            elif 'abri youtube' in query or 'abrir youtube' in query:
+            elif query in trig.YOUTUBE_TRIGGERS:
                 youtubeURL = "https://www.youtube.com/"
                 func.openWebsite(youtubeURL, driver)
 
-            elif 'abri twitch' in query or 'abrir twitch' in query:
+            elif query in trig.TWITCH_TRIGGERS:
                 twitchURL = "https://www.twitch.tv/"
                 func.openWebsite(twitchURL, driver)
 
-            elif 'quien es' in query or 'busca sobre' in query or 'wikipedia' in query or 'quiero saber sobre' in query:
+            elif query in trig.WIKIPEDIA_TRIGGERS:
                 print('Hanna: Buscando...')
                 speak("buscando...")
                 func.getInformation(query)
 
-            elif 'cancion' in query or 'canción' in query:
+            elif query in trig.SONG_TRIGGERS:
                 print('Hanna: ¿que canción busco?')
                 speak('¿que canción busco?')
                 song = takeCommand().lower()
@@ -109,7 +110,7 @@ if __name__ == '__main__':
                 t.start()
                 #func.playVideoOnYoutube(song, driver)
 
-            elif 'video' in query:
+            elif query in trig.VIDEO_TRIGGERS:
                 print('Hanna: ¿Que video busco?')
                 speak('¿que video busco?')
                 video = takeCommand().lower()
@@ -120,24 +121,24 @@ if __name__ == '__main__':
                 t.start()
                 #func.playVideoOnYoutube(video, driver)
 
-            elif 'eventos' in query or 'tengo algo' in query or 'calendario' in query:
+            elif query in trig.GOOGLE_CALENDAR_TRIGGERS:
                 print("Hanna: Buscando eventos...")
                 speak("Buscando eventos")
                 func.getEvents(10, service)
 
-            elif 'hay alguien haciendo stream' in query or 'quien esta en vivo' in query:
+            elif query in trig.CHECK_STREAMERS_TRIGGERS:
                 func.checkStreamers()
 
-            elif 'leeme los ultimos tweets' in query or 'leeme tweets' in query or 'léeme tweets' in query or 'léeme tweet' in query:
+            elif query in trig.READ_TWEETS_TRIGGERS:
                 func.getLatestTweets(api)
 
-            elif 'cuales son las tendencias' in query or 'de que se habla en twitter' in query:
+            elif query in trig.READ_TRENDS_TRIGGERS:
                 func.getTrendsOnTwitter(api)
 
-            elif 'tweeteá' in query or 'twiteá' in query or 'publicá un tweet' in query or 'publicá un twit' in query:
+            elif query in trig.PUBLISH_TWEET_TRIGGERS:
                 func.publishTweet(api)
 
-        elif 'gracias hanna' in query or 'listo hanna' in query or 'listo' in query or 'isto' in query:
+        elif query in trig.SLEEP_TRIGGERS:
             print('Hanna: Hasta luego!')
             speak('Hasta luego!')
             break
