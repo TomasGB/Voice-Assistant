@@ -25,4 +25,3 @@ def takeCommand():
     except:
         print('...')
         return "none"
-    return text
