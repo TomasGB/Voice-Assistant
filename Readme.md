@@ -2,6 +2,21 @@
 
 Python Assistant capable of taking voice commands and interact with different third party APIs (Google calendar, Twitch,Twitter, OpenWeather). The goal it's to automate daily tasks.
 
+## Project structure
+
+* src /
+
+    * `apiCredential.py` In this file are located all API's credentials.
+
+    * `functionalities.py` In this file are located all the asisstant functionatilies. 
+
+    * `main.py` This is the file that runs the assistant.
+
+    * `speak.py` In this file is located all the speech recognition and text to speech code related.
+
+    * `triggers.py` In this file are located all lists of sentences or words that triggers the functionalities.
+
+
 ## Functionalities
 
 Hanna has different functionalities, that can be found inside "functionalities.py". Some of them are:
